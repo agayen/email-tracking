@@ -1,6 +1,7 @@
 'use strict';
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+const logger = require('../../config/logger');
 
 var emailAttachment = new Schema({
     filename: {
@@ -28,11 +29,28 @@ var emailSchema = new Schema({
     error: Schema.Types.Mixed,
     status: {
         type: String,
-        enum : ['new','opened', 'failed'],
+        enum: ['new', 'opened', 'failed'],
         default: 'new'
     }
 }, { timestamps: true });
 
 var Email = mongoose.model('Email', emailSchema);
 
-module.exports = Email;
+const fetchData = async function (callback, fallback) {
+    try {
+        const data = await Email.find({}).
+            limit(10).
+            sort({ occupation: -1 }).
+            exec();
+
+        return callback(data);
+    } catch (error) {
+        logger.error(error);
+        return fallback();
+    }
+};
+
+module.exports = {
+    Email,
+    FetchData: fetchData
+};
