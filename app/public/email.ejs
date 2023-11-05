@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <!----css3---->
+  <link rel="stylesheet" href="css/custom.css" />
+  <!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+
+  <!--google material icon-->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet" />
+
+
+
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.bubble.css">
+  <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.js"></script>
+</head>
+<style>
+  .email-editor {
+    min-height: 92vh;
+  }
+
+  .email-editor input {
+    border: none;
+    outline: none;
+
+    border-bottom: 1px solid black;
+    background-color: transparent;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  #editor-container {
+    min-height: 400px;
+    overflow-y: auto;
+    font-size: 1rem;
+  }
+
+  .email-send-btn {
+    margin: 20px 0px;
+    display: flex;
+    justify-content: end;
+    width: 100%;
+  }
+
+  .email-send-btn button {
+    margin-right: 10px;
+  }
+</style>
+
+<body>
+  <div class="wrapper">
+    <div class="body-overlay"></div>
+    <div>
+      <%- include('componets/navbar.ejs'); %>
+    </div>
+    <div id="content">
+      <div class="top-navbar">
+        <nav class="navbar navbar-expand-lg">
+          <div class="container-fluid">
+            <button type="button" id="sidebarCollapse" class="d-xl-block d-lg-block d-md-mone d-none">
+              <span class="material-icons">arrow_back_ios</span>
+            </button>
+
+            <a class="navbar-brand" href="#"> Email Campain </a>
+
+            <button class="d-inline-block d-lg-none ml-auto more-button" type="button" data-toggle="collapse"
+              data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+              aria-label="Toggle navigation">
+              <span class="material-icons">more_vert</span>
+            </button>
+
+            <div class="collapse navbar-collapse d-lg-block d-xl-block d-sm-none d-md-none d-none"
+              id="navbarSupportedContent">
+              <ul class="nav navbar-nav ml-auto">
+                <li class="dropdown nav-item active">
+                  <a href="#" class="nav-link" data-toggle="dropdown">
+                    <span class="material-icons">notifications</span>
+                    <span class="notification">4</span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="#">You have 5 new messages</a>
+                    </li>
+                    <li>
+                      <a href="#">You're now friend with Mike</a>
+                    </li>
+                    <li>
+                      <a href="#">Wish Mary on her birthday!</a>
+                    </li>
+                    <li>
+                      <a href="#">5 warnings in Server Console</a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    <span class="material-icons">apps</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    <span class="material-icons">person</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    <span class="material-icons">settings</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <div class="main-content">
+        <form class="email-editor" id="email-from">
+          <div>
+            <div>
+              <label>From</label>
+              <input text="Email" placeholder="Enter Email Address" readonly value="agayentesting@gmail.com" />
+            </div>
+            <div>
+              <label>To</label>
+              <input text="Email" placeholder="Enter Email Address" id="send_to_email" required />
+            </div>
+            <div>
+              <label>Subject</label>
+              <input type="text" placeholder="Enter Subject of the Email" id="subject_of_email" minlength="5"
+                required />
+            </div>
+          </div>
+          <div id="editor-container">
+            <h1>Quill to HTML</h1>
+            ➡️ Modify this content to update HTML output 🔻.
+          </div>
+          <div class="email-send-btn">
+            <button class="btn btn-primary" type="submit" onclick="send_email()"> Send Email</button>
+            <button class="btn btn-secondary" type="reset">Reset Email</button>
+          </div>
+          <pre><code id="output-html"></code></pre>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="js/jquery-3.3.1.slim.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#sidebarCollapse").on("click", function () {
+      $("#sidebar").toggleClass("active");
+      $("#content").toggleClass("active");
+    });
+
+    $(".more-button,.body-overlay").on("click", function () {
+      $("#sidebar,.body-overlay").toggleClass("show-nav");
+    });
+  });
+</script>
+<script>
+  // Initialize QUill editor
+  var quill = new Quill('#editor-container', {
+    modules: {
+      toolbar: [
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        ['image', 'code-block'],
+        ['link'],
+        [{ 'script': 'sub' }, { 'script': 'super' }],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        ['clean']
+      ]
+    },
+    placeholder: 'Compose an epic...',
+    theme: 'snow'  // or 'bubble'
+  });
+
+
+  quill.on('text-change', function (delta, source) {
+    updateHtmlOutput()
+  })
+
+  // When the convert button is clicked, update output
+
+
+  const send_email = () => {
+    let subject_of_email = document.getElementById('subject_of_email').value
+    let send_to_email = document.getElementById('send_to_email').value
+    let email_content = getQuillHtml()
+
+    console.log(subject_of_email, send_to_email, email_content)
+
+    fetch('/email/send_email', {
+      method: 'POST',
+      body: JSON.stringify({
+        to: send_to_email,
+        html: email_content,
+        subject: subject_of_email
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      }
+    }).then(
+      res => {
+        res.json().then((data) => {
+          console.log(data);
+        })
+      });
+  }
+
+
+  // Return the HTML content of the editor
+  function getQuillHtml() { return quill.root.innerHTML; }
+
+  // Highlight code output
+  function updateHighlight() { hljs.highlightBlock(document.querySelector('#output-html')) }
+
+
+  function updateHtmlOutput() {
+    let html = getQuillHtml();
+    console.log(html);
+    document.getElementById('output-html').innerText = html;
+    updateHighlight();
+
+    return html
+  }
+
+  updateHtmlOutput()
+</script>
+
+</html>

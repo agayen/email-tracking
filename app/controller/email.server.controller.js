@@ -8,7 +8,11 @@ module.exports.apiDocs = function (req, res) {
 };
 
 module.exports.getEmails = function (req, res) {
-    FetchData((data) => res.send({email: data}), () => res.send({email: []}));
+    FetchData({
+        callback: (data, stats_data) => res.send({email: data, stats_data: stats_data}), 
+        fallback: () => res.send({email: []}),
+        stats_require: true
+    });
 };
 
 module.exports.sendEmail = function (req, res) {
