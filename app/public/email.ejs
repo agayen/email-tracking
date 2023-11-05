@@ -147,7 +147,8 @@
             ➡️ Modify this content to update HTML output 🔻.
           </div>
           <div class="email-send-btn">
-            <button class="btn btn-primary" type="submit" onclick="send_email()"> Send Email</button>
+            <button class="btn btn-primary" type="submit" onclick="send_email()" id="email_send_submit"> Send
+              Email</button>
             <button class="btn btn-secondary" type="reset">Reset Email</button>
           </div>
           <pre><code id="output-html"></code></pre>
@@ -207,24 +208,29 @@
 
     console.log(subject_of_email, send_to_email, email_content)
 
-    fetch('/email/send_email', {
-      method: 'POST',
-      body: JSON.stringify({
-        to: send_to_email,
-        html: email_content,
-        subject: subject_of_email
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8'
-      }
-    }).then(
-      res => {
-        res.json().then((data) => {
-          console.log(data);
-        })
-      });
+    if (subject_of_email && send_to_email && email_content) {
+      fetch('/email/send_email', {
+        method: 'POST',
+        body: JSON.stringify({
+          to: send_to_email,
+          html: email_content,
+          subject: subject_of_email
+        }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8'
+        }
+      }).then(
+        res => {
+          res.json().then((data) => {
+            console.log(data);
+            document.getElementById('email-from').reset();
+            subject_of_email = null;
+            send_to_email = null;
+            email_content = null;
+          })
+        });
+    }
   }
-
 
   // Return the HTML content of the editor
   function getQuillHtml() { return quill.root.innerHTML; }
