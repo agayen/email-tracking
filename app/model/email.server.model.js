@@ -36,7 +36,7 @@ var emailSchema = new Schema({
 
 var Email = mongoose.model('Email', emailSchema);
 
-const fetchData = async function ({callback, fallback, no_skip = 0, limit = 10, stats_require = false, email_status = null}) {
+const fetchData = async function ({callback, fallback, no_skip = 0, limit = 5, stats_require = false, email_status = null}) {
     try {
         let stats_data, data;
         if (email_status && ['new', 'opened', 'failed'].includes(email_status) ){
