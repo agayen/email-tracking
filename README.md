@@ -32,9 +32,7 @@ Embed a tiny (1x1 resolution preferably) image inside the body of the email, wit
   ```
   {
 	"subject": "Subject Line",
-	"to": "sachinkalsi15@gmail.com",
+	"to": "your_email@gmail.com",
 	"html": "<b>Hi Sachin, This application is really helping me a lot. Thank You So Much.</b>"
  }
 ```
-
-*_Update_*: The heroku app link (https://email-tracker-dev.herokuapp.com/) might not work. The heroko has made some restrictions on free dynos
