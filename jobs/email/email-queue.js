@@ -1,6 +1,6 @@
 const { Queue, Worker } = require('bullmq');
 const Redis = require('ioredis');
-const connection = new Redis('rediss://default:AVNS_Sm725ayD3bDoRUqHwis@redis-abhijit-abhijitgayen428-80df.a.aivencloud.com:20008');
+const connection = new Redis();
 // Our job queue
 // const emailsQueue = new Queue('email', { connection });
 
